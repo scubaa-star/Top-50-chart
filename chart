@@ -1,0 +1,89 @@
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Top 50 best selling albums data (in millions of equivalent album sales / EAS) 12/30/2024
+albums = [
+    {"title": "Thriller", "artist": "Michael Jackson", "EAS": 122.84},                                              #1
+    {"title": "Hotel California", "artist": "Eagles", "EAS": 73.20},                                                #2
+    {"title": "Saturday Night Fever", "artist": "Bee Gees & Various Artists", "EAS": 71.25},                        #3
+    {"title": "Rumours", "artist": "Fleetwood Mac", "EAS": 66.97},                                                  #4
+    {"title": "Bad", "artist": "Michael Jackson", "EAS": 66.42},                                                    #5
+    {"title": "Back in Black", "artist": "AC/DC", "EAS": 63.20},                                                    #6
+    {"title": "Nevermind", "artist": "Nirvana", "EAS": 60.62},                                                      #7
+    {"title": "Led Zeppelin IV", "artist": "Led Zeppelin", "EAS": 59.28},                                           #8
+    {"title": "Abbey Road", "artist": "The Beatles", "EAS": 59.25},                                                 #9
+    {"title": "The Dark Side Of The Moon", "artist": "Pink Floyd", "EAS": 58.82},                                   #10
+    {"title": "The Bodyguard", "artist": "Whitney Houston & Various Artists", "EAS": 55.85},                        #11
+    {"title": "The Wall", "artist": "Pink Floyd", "EAS": 54.28},                                                    #12
+    {"title": "Grease", "artist": "Various Artists", "EAS": 54.27},                                                 #13
+    {"title": "21", "artist": "Adele", "EAS": 54.09},                                                               #14
+    {"title": "Slippery When Wet", "artist": "Bon Jovi", "EAS": 53.77},                                             #15
+    {"title": "Appetite For Destruction", "artist": "Guns 'N Roses", "EAS": 52.23},                                 #16
+    {"title": "Metallica (Black Album)", "artist": "Metallica", "EAS": 50.69},                                      #17
+    {"title": "The Joshua Tree", "artist": "U2", "EAS": 50.26},                                                     #18
+    {"title": "Born In The U.S.A.", "artist": "Bruce Springsteen", "EAS": 50.00},                                   #19
+    {"title": "Brothers In Arms", "artist": "Dire Straits", "EAS": 47.80},                                          #20
+    {"title": "Dangerous", "artist": "Michael Jackson", "EAS": 47.36},                                              #21
+    {"title": "Let's Talk About Love", "artist": "Celine Dion", "EAS": 47.27},                                      #22
+    {"title": "Come On Over", "artist": "Shania Twain", "EAS": 47.19},                                              #23
+    {"title": "Bridge Over Troubled Water", "artist": "Simon & Garfunkel", "EAS": 46.46},                           #24
+    {"title": "Help!", "artist": "The Beatles", "EAS": 45.58},                                                      #25
+    {"title": "Let It Be", "artist": "The Beatles", "EAS": 45.05},                                                  #26
+    {"title": "A Night At The Opera", "artist": "Queen", "EAS": 43.71},                                             #27
+    {"title": "Layla And Other Assorted Love Songs", "artist": "Derek & The Dominos", "EAS": 43.21},                #28
+    {"title": "Falling Into You", "artist": "Celine Dion", "EAS": 43.19},                                           #29
+    {"title": "Jagged Little Pill", "artist": "Alanis Morissette", "EAS": 42.91},                                   #30
+    {"title": "The Fame Monster (Deluxe)", "artist": "Lady Gaga", "EAS": 41.93},                                    #31
+    {"title": "Abraxas", "artist": "Santana", "EAS": 41.10},                                                        #32
+    {"title": "Like A Virgin", "artist": "Madonna", "EAS": 40.42},                                                  #33
+    {"title": "The Doors", "artist": "The Doors", "EAS": 40.20},                                                    #34
+    {"title": "Please Please Me", "artist": "The Beatles", "EAS": 40.18},                                           #35
+    {"title": "1989", "artist": "Taylor Swift", "EAS": 39.97},                                                      #36
+    {"title": "The Eminem Show", "artist": "Eminem", "EAS": 39.96},                                                 #37
+    {"title": "Are You Experienced", "artist": "Jimi Hendrix", "EAS": 39.73},                                       #38
+    {"title": "Synchronicity", "artist": "The Police", "EAS": 38.90},                                               #39
+    {"title": "Purple Rain", "artist": "Prince And The Revolution", "EAS": 38.43},                                  #40
+    {"title": "The Beatles (The White Album)", "artist": "The Beatles", "EAS": 38.20},                              #41
+    {"title": "Hybrid Theory", "artist": "Linkin Park", "EAS": 38.06},                                              #42
+    {"title": "True Blue", "artist": "Madonna", "EAS": 37.85},                                                      #43
+    {"title": "Reckless", "artist": "Bryan Adams", "EAS": 37.83},                                                   #44
+    {"title": "Arrival", "artist": "ABBA", "EAS": 37.31},                                                           #45
+    {"title": "Sgt. Peppers Lonely Hearts Club Band", "artist": "The Beatles", "EAS": 37.25},                       #46
+    {"title": "Brother Love's Travelling Salvation Show / Sweet Caroline", "artist": "Neil Diamond", "EAS": 37.19}, #47
+    {"title": "Dirty Dancing", "artist": "Various Artists", "EAS": 36.77},                                          #48
+    {"title": "Elvis' Christmas Album", "artist": "Elvis Presley", "EAS": 36.65},                                   #49
+    {"title": "Titanic", "artist": "James Horner", "EAS": 36.63},                                                   #50
+]
+
+# Extract data for plotting
+eas = [album["EAS"] for album in albums]
+titles = [f"#{i+1} {album['artist']} - {album['title']}" for i, album in enumerate(albums)]
+
+# Create the horizontal bar graph
+plt.figure(figsize=(15, 20))
+bars = plt.barh(range(len(eas)), eas, color='skyblue')
+
+# Add text labels inside the bars, centered left
+for i, (bar, title) in enumerate(zip(bars, titles)):
+    # Check if the title matches the specific album
+    if title.split(' - ')[1] == "Brother Love's Travelling Salvation Show / Sweet Caroline":
+        fontsize = 12
+    else:
+        fontsize = 12
+    plt.text(5, bar.get_y() + bar.get_height()/2, 
+             title, ha='left', va='center', color='black', fontsize=fontsize)
+
+# Add y-axis labels for EAS values
+plt.yticks(range(len(eas)), eas)
+plt.xlabel('Total EAS (In Millions)', fontsize = 20)
+plt.ylabel('Numerical EAS (In Millions)', fontsize = 20)
+plt.title('Top 50 Best Selling Albums of All Time [Worldwide]', fontsize=20)
+
+# Add grid for better readability
+plt.grid(axis='x', alpha=0.3)
+
+# Invert y-axis to show highest EAS at the top
+plt.gca().invert_yaxis()
+
+plt.tight_layout()
+plt.show()
